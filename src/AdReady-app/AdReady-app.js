@@ -99,6 +99,7 @@ class AdReadyApp extends PolymerElement {
       <iron-pages selected="[[page]]" attr-for-selected="name" role="main">
       <home-page name="home"></home-page>
       <login-page name="login"></login-page>
+      <admin-page name="admin-page"></admin-page>
     </iron-pages>
     </app-header-layout>
   </app-drawer-layout>
@@ -172,7 +173,7 @@ class AdReadyApp extends PolymerElement {
     _routePageChanged(page) {
       if (!page) {
         this.page = 'login';
-      } else if (['login'].indexOf(page) !== -1) {
+      } else if (['login','admin-page'].indexOf(page) !== -1) {
         this.page = page;
       } else {
         this.page = 'login';
@@ -189,6 +190,10 @@ class AdReadyApp extends PolymerElement {
   
         case 'login':
           import('./login-page.js');
+          break;
+
+        case 'admin-page':
+          import('./admin-Page.js');
           break;
   
       }
