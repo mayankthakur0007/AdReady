@@ -1,4 +1,3 @@
-
 /**
 * this is the main routing page of this application.
 */
@@ -86,10 +85,9 @@ class AdReadyApp extends PolymerElement {
         <app-toolbar>
           <div main-title="">
             <h3>
-              Employee Management
+          AdReady
             </h3>
           </div>
-          <paper-button raised class="header" on-click="_handleHome">HOME</paper-button>
           <template is="dom-if" if={{login}}>
           <paper-button raised class="header" on-click="_handleLogout">Logout</paper-button>
           <h2>Welcome , {{userName}}</h2>
