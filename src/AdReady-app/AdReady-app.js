@@ -191,7 +191,7 @@ class AdReadyApp extends PolymerElement {
         import('./admin-Page.js');
         break;
       case 'salesperson-page':
-        import('./salesPerson-Page.js');
+        import('./salesPerson-page.js');
         break;
 
     }

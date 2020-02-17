@@ -114,21 +114,22 @@ class LoginPage extends PolymerElement {
     // getting response from server and storing user name and id in session storage
     _handleResponse(event) {
         this.users = event.detail.response
+        console.log(this.users)
         if (this.users.statusCode == "404") {
             this.$.wrongCredentials.open();
         } else {
             this.dispatchEvent(new CustomEvent('refresh-login', {
-                detail: { login: true, name: this.users.employeeName }, bubbles:
+                detail: { login: true, name: this.users.userName }, bubbles:
                     true, composed: true
             }))
             sessionStorage.setItem('login', true);
             sessionStorage.setItem('id', this.users.employeeId);
-      console.log(this.users.role)
-            // if (this.users.role = "ADMIN") {
-            //     this.set('route.path', './admin-page')
-            // } else if(this.users.role = "SALESPERSON"){
-            //     this.set('route.path', './salesperson-page')
-            // }
+            console.log(this.users.role)
+            if (this.users.role == "SALESPERSON") {
+                this.set('route.path', './salesperson-page')
+            }else{
+                this.set('route.path', './admin-page')
+            }
         }
     }
     // calling main ajax call method
