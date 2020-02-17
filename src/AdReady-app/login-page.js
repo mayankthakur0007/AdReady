@@ -58,6 +58,8 @@ class LoginPage extends PolymerElement {
         left: 39%;
     }
 </style>
+<app-location route="{{route}}">
+</app-location>
 <div id="container">
     <iron-form id="form">
         <form>
@@ -112,7 +114,6 @@ class LoginPage extends PolymerElement {
     // getting response from server and storing user name and id in session storage
     _handleResponse(event) {
         this.users = event.detail.response
-        console.log(this.users)
         if (this.users.statusCode == "404") {
             this.$.wrongCredentials.open();
         } else {
@@ -122,11 +123,12 @@ class LoginPage extends PolymerElement {
             }))
             sessionStorage.setItem('login', true);
             sessionStorage.setItem('id', this.users.employeeId);
-            if (this.users.role = "ADMIN") {
-                this.set('route.path', './admin-page')
-            } else {
-                this.set('route.path', './salesPerson-page')
-            }
+      console.log(this.users.role)
+            // if (this.users.role = "ADMIN") {
+            //     this.set('route.path', './admin-page')
+            // } else if(this.users.role = "SALESPERSON"){
+            //     this.set('route.path', './salesperson-page')
+            // }
         }
     }
     // calling main ajax call method

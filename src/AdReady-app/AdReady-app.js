@@ -98,105 +98,105 @@ class AdReadyApp extends PolymerElement {
       <home-page name="home"></home-page>
       <login-page name="login"></login-page>
       <admin-page name="admin-page"></admin-page>
+      <salesperson-page name="salesperson-page"></salesperson-page>
     </iron-pages>
     </app-header-layout>
   </app-drawer-layout>
   
   `;
-    }
-    static get properties() {
-      return {
-        page: {
-          type: String,
-          reflectToAttribute: true,
-          observer: '_pageChanged'
-        },
-        userName: {
-          type: String
-        },
-        schemeId: {
-          type: Number,
-          value: 0,
-          observer: '_idChanged'
-        },
-        login: {
-          type: Boolean,
-          value: false,
-          reflectToAttribute: true,
-          observer: '_loginChanged'
-        },
-        routeData: Object,
-        subroute: Object,
-  
-      };
-    }
-    // observing the page change
-    static get observers() {
-      return [
-        '_routePageChanged(routeData.page)'
-      ];
-    }
-    _loginChanged() {
-      this.addEventListener('refresh-login', (event) => {
-        this.login = event.detail.login;
-      this.userName =  event.detail.name;
-      })
-    }
-    // // _handleClear() {
-    // // sessionStorage.clear();
-    // // }
-    // _handleAdmin() {
-    //   this.shadowRoot.querySelector('#guestTag1').style.display = 'block'
-    //   this.shadowRoot.querySelector('#adminTag').style.display = 'none'
-    // }
-    _handleHome() {
-      sessionStorage.clear();
-      this.login = false;
-      this.set('route.path', './home')
-    }
-    _handleLogout() {
-      sessionStorage.clear();
-      this.login = false;
-      this.set('route.path', './home')
-    }
-    // _handleGuest() {
-    //   this.shadowRoot.querySelector('#guestTag1').style.display = 'none'
-    //   this.shadowRoot.querySelector('#adminTag').style.display = 'block'
-    // }
-    /**
-    * Show the corresponding page according to the route.
-    * If no page was found in the route data, page will be an empty string.
-    * Show 'view1' in that case. And if the page doesn't exist, show 'view404'.
-    */
-    _routePageChanged(page) {
-      if (!page) {
-        this.page = 'login';
-      } else if (['login','admin-page'].indexOf(page) !== -1) {
-        this.page = page;
-      } else {
-        this.page = 'login';
-      }
-    }
-    /**
-    * Import the page component on demand.
-    * Note: `polymer build` doesn't like string concatenation in the import
-    * statement, so break it up.
-    */
-    _pageChanged(page) {
-      switch (page) {
-   
-  
-        case 'login':
-          import('./login-page.js');
-          break;
+  }
+  static get properties() {
+    return {
+      page: {
+        type: String,
+        reflectToAttribute: true,
+        observer: '_pageChanged'
+      },
+      userName: {
+        type: String
+      },
+      schemeId: {
+        type: Number,
+        value: 0,
+        observer: '_idChanged'
+      },
+      login: {
+        type: Boolean,
+        value: false,
+        reflectToAttribute: true,
+        observer: '_loginChanged'
+      },
+      routeData: Object,
+      subroute: Object,
 
-        case 'admin-page':
-          import('./admin-Page.js');
-          break;
-  
-      }
+    };
+  }
+  // observing the page change
+  static get observers() {
+    return [
+      '_routePageChanged(routeData.page)'
+    ];
+  }
+  _loginChanged() {
+    this.addEventListener('refresh-login', (event) => {
+      this.login = event.detail.login;
+      this.userName = event.detail.name;
+    })
+  }
+  // // _handleClear() {
+  // // sessionStorage.clear();
+  // // }
+  // _handleAdmin() {
+  //   this.shadowRoot.querySelector('#guestTag1').style.display = 'block'
+  //   this.shadowRoot.querySelector('#adminTag').style.display = 'none'
+  // }
+
+  _handleLogout() {
+    sessionStorage.clear();
+    this.login = false;
+    this.set('route.path', './home')
+  }
+  // _handleGuest() {
+  //   this.shadowRoot.querySelector('#guestTag1').style.display = 'none'
+  //   this.shadowRoot.querySelector('#adminTag').style.display = 'block'
+  // }
+  /**
+  * Show the corresponding page according to the route.
+  * If no page was found in the route data, page will be an empty string.
+  * Show 'view1' in that case. And if the page doesn't exist, show 'view404'.
+  */
+  _routePageChanged(page) {
+    if (!page) {
+      this.page = 'login';
+    } else if (['login', 'admin-page', 'salesperson-page'].indexOf(page) !== -1) {
+      this.page = page;
+    } else {
+      this.page = 'login';
     }
-  
+  }
+  /**
+  * Import the page component on demand.
+  * Note: `polymer build` doesn't like string concatenation in the import
+  * statement, so break it up.
+  */
+  _pageChanged(page) {
+    switch (page) {
+
+
+      case 'login':
+        import('./login-page.js');
+        break;
+
+      case 'admin-page':
+        import('./admin-Page.js');
+        break;
+      case 'salesperson-page':
+        import('./salesPerson-Page.js');
+        break;
+
+    }
+  }
+
 }
 
 window.customElements.define('adready-app', AdReadyApp);
