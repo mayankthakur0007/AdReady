@@ -12,7 +12,6 @@ import '@polymer/app-layout/app-toolbar/app-toolbar.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/iron-icons/iron-icons.js';
-import "@fabricelements/skeleton-carousel/skeleton-carousel.js";
 import '@polymer/polymer/lib/elements/dom-if.js'
 import '@polymer/iron-icons/places-icons.js';
 import '@polymer/app-route/app-route.js';
