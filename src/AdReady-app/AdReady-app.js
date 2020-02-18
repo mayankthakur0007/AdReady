@@ -1,4 +1,3 @@
-
 /**
 * this is the main routing page of this application.
 */
@@ -10,8 +9,9 @@ import '@polymer/app-layout/app-header/app-header.js';
 import '@polymer/app-layout/app-header-layout/app-header-layout.js';
 import '@polymer/app-layout/app-toolbar/app-toolbar.js';
 import '@polymer/paper-button/paper-button.js';
-import '@polymer/iron-icon/iron-icon.js';
+import '@polymer/iron-icons/hardware-icons.js';
 import '@polymer/iron-icons/iron-icons.js';
+import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/polymer/lib/elements/dom-if.js'
 import '@polymer/iron-icons/places-icons.js';
 import '@polymer/app-route/app-route.js';
@@ -38,7 +38,7 @@ class AdReadyApp extends PolymerElement {
     :host {
       --app-primary-color: #ff7424;
       --app-secondary-color: black;
-      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
       display: block;
     }
     app-drawer-layout:not([narrow]) [drawer-toggle] {
@@ -46,7 +46,7 @@ class AdReadyApp extends PolymerElement {
     }
     app-header {
       color: #fff;
-      background-color: var(--app-primary-color);
+      background-color: rgb(66, 135, 245);
     }
    h3{
      color:white
@@ -66,14 +66,13 @@ class AdReadyApp extends PolymerElement {
       color: black;
       font-weight: bold;
     }
-    header{
+    .header{
       float:right;
-      background-color:black;
+margin-left:30px;
+cursor: pointer;
       color:white;
     }
   </style>
-  
-  <h1>dfdfd</h1>
   <app-location route="{{route}}">
   </app-location>
   <app-route route="{{route}}" pattern="[[rootPath]]:page" data="{{routeData}}" tail="{{subroute}}">
@@ -86,13 +85,12 @@ class AdReadyApp extends PolymerElement {
         <app-toolbar>
           <div main-title="">
             <h3>
-              Employee Management
+          AdReady
             </h3>
           </div>
-          <paper-button raised class="header" on-click="_handleHome">HOME</paper-button>
           <template is="dom-if" if={{login}}>
-          <paper-button raised class="header" on-click="_handleLogout">Logout</paper-button>
           <h2>Welcome , {{userName}}</h2>
+          <a raised class="header" on-click="_handleLogout"> Logout<iron-icon icon="hardware:keyboard-tab"></iron-icon></a>
           </template>
         </app-toolbar>
       </app-header>
@@ -100,105 +98,106 @@ class AdReadyApp extends PolymerElement {
       <home-page name="home"></home-page>
       <login-page name="login"></login-page>
       <admin-page name="admin-page"></admin-page>
+      <my-bookings name="my-bookings"></my-bookings>
+      <salesperson-page name="salesperson-page"></salesperson-page>
     </iron-pages>
     </app-header-layout>
   </app-drawer-layout>
   
   `;
-    }
-    static get properties() {
-      return {
-        page: {
-          type: String,
-          reflectToAttribute: true,
-          observer: '_pageChanged'
-        },
-        userName: {
-          type: String
-        },
-        schemeId: {
-          type: Number,
-          value: 0,
-          observer: '_idChanged'
-        },
-        login: {
-          type: Boolean,
-          value: false,
-          reflectToAttribute: true,
-          observer: '_loginChanged'
-        },
-        routeData: Object,
-        subroute: Object,
-  
-      };
-    }
-    // observing the page change
-    static get observers() {
-      return [
-        '_routePageChanged(routeData.page)'
-      ];
-    }
-    _loginChanged() {
-      this.addEventListener('refresh-login', (event) => {
-        this.login = event.detail.login;
-      this.userName =  event.detail.name;
-      })
-    }
-    // // _handleClear() {
-    // // sessionStorage.clear();
-    // // }
-    // _handleAdmin() {
-    //   this.shadowRoot.querySelector('#guestTag1').style.display = 'block'
-    //   this.shadowRoot.querySelector('#adminTag').style.display = 'none'
-    // }
-    _handleHome() {
-      sessionStorage.clear();
-      this.login = false;
-      this.set('route.path', './home')
-    }
-    _handleLogout() {
-      sessionStorage.clear();
-      this.login = false;
-      this.set('route.path', './home')
-    }
-    // _handleGuest() {
-    //   this.shadowRoot.querySelector('#guestTag1').style.display = 'none'
-    //   this.shadowRoot.querySelector('#adminTag').style.display = 'block'
-    // }
-    /**
-    * Show the corresponding page according to the route.
-    * If no page was found in the route data, page will be an empty string.
-    * Show 'view1' in that case. And if the page doesn't exist, show 'view404'.
-    */
-    _routePageChanged(page) {
-      if (!page) {
-        this.page = 'login';
-      } else if (['login','admin-page'].indexOf(page) !== -1) {
-        this.page = page;
-      } else {
-        this.page = 'login';
-      }
-    }
-    /**
-    * Import the page component on demand.
-    * Note: `polymer build` doesn't like string concatenation in the import
-    * statement, so break it up.
-    */
-    _pageChanged(page) {
-      switch (page) {
-   
-  
-        case 'login':
-          import('./login-page.js');
-          break;
+  }
+  static get properties() {
+    return {
+      page: {
+        type: String,
+        reflectToAttribute: true,
+        observer: '_pageChanged'
+      },
+      userName: {
+        type: String,
+        value: sessionStorage.getItem("name"),
+        reflectToAttribute: true,
+        observer: '_nameChanged'
+      },
+      schemeId: {
+        type: Number,
+        value: 0,
+        observer: '_idChanged'
+      },
+      login: {
+        type: Boolean,
+        value: sessionStorage.getItem("login"),
+        reflectToAttribute: true,
+        observer: '_loginChanged'
+      },
+      routeData: Object,
+      subroute: Object,
 
-        case 'admin-page':
-          import('./admin-Page.js');
-          break;
-  
-      }
+    };
+  }
+  // observing the page change
+  static get observers() {
+    return [
+      '_routePageChanged(routeData.page)'
+    ];
+  }
+  _nameChanged() {
+    this.userName = this.userName
+  }
+  _loginChanged() {
+    this.addEventListener('refresh-login', (event) => {
+      this.login = event.detail.login;
+      this.userName = event.detail.name;
+    })
+  }
+
+
+  _handleLogout() {
+    sessionStorage.clear();
+    this.login = false;
+    this.set('route.path', './home')
+  }
+
+  /**
+  * Show the corresponding page according to the route.
+  * If no page was found in the route data, page will be an empty string.
+  * Show 'view1' in that case. And if the page doesn't exist, show 'view404'.
+  */
+  _routePageChanged(page) {
+    if (!page) {
+      this.page = 'login';
+    } else if (['login', 'admin-page', 'salesperson-page', 'my-bookings'].indexOf(page) !== -1) {
+      this.page = page;
+    } else {
+      this.page = 'login';
     }
-  
+  }
+  /**
+  * Import the page component on demand.
+  * Note: `polymer build` doesn't like string concatenation in the import
+  * statement, so break it up.
+  */
+  _pageChanged(page) {
+    switch (page) {
+
+
+      case 'login':
+        import('./login-page.js');
+        break;
+
+      case 'admin-page':
+        import('./admin-Page.js');
+        break;
+      case 'salesperson-page':
+        import('./salesPerson-page.js');
+        break;
+      case 'my-bookings':
+        import('./my-bookings.js');
+        break;
+
+    }
+  }
+
 }
 
 window.customElements.define('adready-app', AdReadyApp);

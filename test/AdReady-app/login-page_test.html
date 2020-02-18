@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+
+<head>
+  <script src="../../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+  <script src="../../node_modules/@polymer/test-fixture/test-fixture.js"></script>
+  <script src="../../node_modules/mocha/mocha.js"></script>
+  <script src="../../node_modules/chai/chai.js"></script>
+  <script src="../../node_modules/sinon/pkg/sinon.js"></script>
+  <script src="../../node_modules/wct-mocha/wct-mocha.js"></script>
+
+  <!-- <script type="module" src="../../src/AdReady-app/login-page.js"></script> -->
+  <script type="module" src="../../src/AdReady-app/login-page.js"></script>
+</head>
+
+<body>
+  <test-fixture id="loginFixture">
+    <template>
+      <login-page></login-page>
+    </template>
+  </test-fixture>
+  <script>
+    describe('Login Page', function () {
+      var element;
+      var elementShadowRoot
+     
+      describe('When the component is rendered', function () {
+        beforeEach(function () {
+          element = fixture('loginFixture');
+          console.log(element)
+          elementShadowRoot = element.shadowRoot;
+          console.log(elementShadowRoot)
+        });
+        it('should render the component', function () {
+          expect(element).to.be.exist;
+          expect(elementShadowRoot).to.be.exist;
+        });
+        it('should render the mobile number input field', () => {
+          let mobileNumber = elementShadowRoot.querySelector('#mobile')
+          expect(mobileNumber).to.be.exist;
+        });
+
+        it('should render the password input field', () => {
+          let password = elementShadowRoot.querySelector('#pass')
+          expect(password).to.be.exist;
+        });
+        it('should render the login button', () => {
+          let loginBtn = elementShadowRoot.querySelector('#login')
+          expect(loginBtn).to.be.exist;
+        });
+        describe('AND when button is clicked', () => {
+          let sinonSpy;
+          let loginBtn;
+          beforeEach(() => {
+            loginBtn = elementShadowRoot.querySelector('#login');
+            sinonSpy = sinon.spy();
+            loginBtn.addEventListener('click', sinonSpy);
+          });
+          it('should call _signIn() method once', function (done) {
+            flush(function () {
+              loginBtn.click();
+              expect(loginBtn.callCount).to.be.equal(1)
+              done();
+            });
+          });
+          it.skip('should validate the form', (done) => {
+            flush(function () {
+              element.$.mobileNumber.value = '1234567890';
+              element.$.password.value = 'start@123'
+              loginBtn.click();
+            });
+          })
+        })
+      })
+    });
+  </script>
+</body>
+
+</html>

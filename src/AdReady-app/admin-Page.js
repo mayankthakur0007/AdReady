@@ -1,11 +1,15 @@
 import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
 import '@polymer/paper-input/paper-input.js';
 import '@polymer/paper-button/paper-button.js';
+import '@polymer/paper-toast/paper-toast.js';
 import '@polymer/iron-ajax/iron-ajax.js';
+import '@polymer/paper-toast/paper-toast.js';
+import '@polymer/polymer/lib/elements/dom-repeat.js';
 import '@fooloomanzoo/datetime-picker/datetime-picker.js';
-
-
-
+import '@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
+import '@polymer/paper-item/paper-item.js';
+import '@polymer/paper-listbox/paper-listbox.js';
+import './table.js';
 /**
 * @customElement
 * @polymer
@@ -13,109 +17,186 @@ import '@fooloomanzoo/datetime-picker/datetime-picker.js';
 class AdminPage extends PolymerElement {
     static get template() {
         return html`
-    <style>
+<style>
     :host {
-      display: block;
+        display: block;
 
     }
-    </style>
+    h2 {
+        text-align: center;
+    }
+    datetime-picker{
+        margin:0px 10px 0px 10px;
+    }
+    #container {
+        background-color: white;
+        padding: 20px 47px 47px 47px;
+        height: 100%;
+    }
 
-    <iron-ajax id="ajax" handle-as="json" on-response="_handleResponse" content-type="application/json" on-error="_handleError"></iron-ajax>
-
-
-    <h1>admin page </h1>
-    From Date :<datetime-picker value={{FromDate}}></datetime-picker><br>
-
-    To Date :  <datetime-picker></datetime-picker>
-
-    <paper-button raised id="login" on-click="signIn">Add</paper-button>
-
-
+    #tableDiv {
+        margin: 12px;
+    }
+#add{
+    margin-left:45px;
+}
+    paper-button {
+        background-color: rgb(66, 135, 245);
+        color: white;
     
-<!--
-                    var date1, date2;  
-
-                    date1 = new Date( "Jan 1, 2018 11:10:05" );
-                    document.write(""+date1);
-
-                    date2 = new Date( "Jan 1, 2018 08:15:10" );
-                    document.write("<br>"+date2);
-
-                    var res = Math.abs(date1 - date2) / 1000;
-                    
-                    // get total days between two dates
-                    var days = Math.floor(res / 86400);
-                    document.write("<br>Difference (Days): "+days);                        
-                    
-                    // get hours        
-                    var hours = Math.floor(res / 3600) % 24;        
-                    document.write("<br>Difference (Hours): "+hours);  
-                    
-                    // get minutes
-                    var minutes = Math.floor(res / 60) % 60;
-                    document.write("<br>Difference (Minutes): "+minutes);  
-
-                    // get seconds
-                    var seconds = res % 60;
-                    document.write("<br>Difference (Seconds): "+seconds);  
-
-                    -->
-
-                    <table id="tab1">
-                        <h2>gfgdf</h2>
-                        <tr>
-
-                            <th>Plan ID</th>
-                            <th>Plan Name</th>
-
-                            <th>Plan cost</th>
-                            
-                            
-                        </tr>
-        <template is="dom-repeat" items={{PlanDetails}}>
-         <tr>
-
-          <td>{{item.planId}}</td>
-          <td>{{item.planName}}</td>
-
-          <td>{{item.planCost}}</td>
-
-        </tr>
-
-        <template>
-    
-     
-     </table>
-                
-    
-   
-  `;
+    }
+</style>
+<iron-ajax id="ajax" handle-as="json" on-response="_handleResponse" content-type="application/json"
+    on-error="_handleError"></iron-ajax>
+<div id="container">
+    <h1>Admin page </h1>
+    <h3>From  : <datetime-picker date={{fromDate}} time={{fromTime}} ></datetime-picker>
+        To : <datetime-picker date={{toDate}} time={{toTime}}></datetime-picker>
+        Available Plans:
+        <paper-dropdown-menu id="plan" >
+            <paper-listbox slot="dropdown-content" class="dropdown-content" selected="0">
+                <template is="dom-repeat" items={{PlanDetails}}>
+                    <h3>
+                        <paper-item>{{item.planName}} ( ₹ {{item.planCost}})</paper-item>
+                    </h3>
+                </template>
+            </paper-listbox>
+        </paper-dropdown-menu>
+        <paper-button raised id="add" on-click="_handleAdd">Add</paper-button>
+    </h3>
+    <table-element slots-available={{slotsAvailable}} headings-given={{headingsGiven}}></table-element>
+</div>
+<paper-toast text="Slot Added" id="add"></paper-toast>
+<paper-toast text="Date Must Be Equal" id="date"></paper-toast>
+<paper-toast text="Enter Correct Time" id="date1"></paper-toast>
+<paper-toast text="Can't Add Same" id="same"></paper-toast>
+`;
     }
     static get properties() {
         return {
             PlanDetails: {
                 type: Array,
                 value: []
-            }
+            },
 
-
-
+            slotsAvailable: {
+                type: Array,
+                value: []
+            },
+            headingsGiven: {
+                type: Array,
+                value: [
+                    "Date",
+                    "From",
+                    "To",
+                    "Plan Type",
+                    "Total Cost",
+                    "Slot Status"
+                ]
+            },
+            fromDate: {
+                type: String,
+                value: ''
+            },
+            action: {
+                type: String,
+                value: 'plan'
+            },
+            fromTime: {
+                type: String,
+                value: ''
+            },
+            toDate: {
+                type: String
+            },
+            toTime: {
+                type: String
+            },
+            id: Number
         };
     }
 
     // as soon as page load make ajax call method will run
     connectedCallback() {
         super.connectedCallback();
-        this._makeAjax('http://10.117.189.37:9090/akshayapathra/schemes/analysis', 'get', null)
+        this._makeAjax('http://10.117.189.55:9090/admanagement/plans', 'get', null)
+
     }
 
-    signIn() {
-        let a = this.FromDate;
-        console.log(a);
+    _checkDate() {
+        let selectedText = this.fromDate;
+        var selectedDate = new Date(selectedText);
+        var now = new Date();
+        if (selectedDate <= now) {
+            alert("Date must be in the future");
+        }
+
+    }
+    _handleResponse(event) {
+        switch (this.action) {
+            case 'plan':
+                this.PlanDetails = event.detail.response;
+                let id = sessionStorage.getItem('id')
+                this._makeAjax(`http://10.117.189.55:9090/admanagement/slots/${id}`, 'get', null)
+                this.action = 'slots'
+                break;
+            case 'slots':
+                this.slotsAvailable = event.detail.response;
+                break;
+            case 'addSlots':
+                let data = event.detail.response;
+                this._makeAjax('http://10.117.189.55:9090/admanagement/plans', 'get', null)
+                this.action = 'plan'
+                break;
+        }
+    }
+    // calling main ajax call method
+    _makeAjax(url, method, postObj) {
+        let ajax = this.$.ajax;
+        ajax.method = method;
+        ajax.url = url;
+        ajax.body = postObj ? JSON.stringify(postObj) : undefined;
+        ajax.generateRequest();
+    }
+
+    _handleError(){
+        this.$.same.open();
     }
 
 
+    _handleAdd() {
+        let a = this.$.plan.value.split('(');
+        let a1 = a[1];
+        let b = a1.split(')');
+        let b1 = b[0];
+        let c = b1.split('₹');
+        let price = c[1];
+        console.log(price)
+        for (let i = 0; i < this.PlanDetails.length; i++) {
+            if (this.PlanDetails[i].planCost == price) {
+                this.id = this.PlanDetails[i].planId
+            }
+        } let fromDate = this.fromDate;
+        let toDate = this.toDate;
+        let fromTime = this.fromTime.slice(0, 8);
+        let toTime = this.toTime.slice(0, 8);
+        this.id = sessionStorage.getItem('id');
+        let obj = {
+            date: fromDate, fromTime: fromTime,
+            toTime: toTime, planId: this.id, slotStatus: "AVAILABLE", userId: this.id
+        };
+        console.log(fromDate, toDate);
+        if (!(fromDate == toDate)) {
+            this.$.date.open();
+        } else if (toTime < fromTime) {
+            this.$.date1.open();
+        }
+        else {
+            this.$.add.open();
+            this._makeAjax('http://10.117.189.55:9090/admanagement/slots', 'post', obj);
+            this.action = 'addSlot';
+        }
 
+    }
 }
-
 window.customElements.define('admin-page', AdminPage);
