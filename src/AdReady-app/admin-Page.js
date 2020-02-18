@@ -10,6 +10,7 @@ import '@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
 import '@polymer/paper-item/paper-item.js';
 import '@polymer/paper-listbox/paper-listbox.js';
 import './table.js';
+
 /**
 * @customElement
 * @polymer
@@ -22,6 +23,7 @@ class AdminPage extends PolymerElement {
         display: block;
 
     }
+
     h2 {
         text-align: center;
     }
@@ -43,7 +45,6 @@ class AdminPage extends PolymerElement {
     paper-button {
         background-color: rgb(66, 135, 245);
         color: white;
-    
     }
 </style>
 <iron-ajax id="ajax" handle-as="json" on-response="_handleResponse" content-type="application/json"
@@ -78,6 +79,7 @@ class AdminPage extends PolymerElement {
                 type: Array,
                 value: []
             },
+
 
             slotsAvailable: {
                 type: Array,
@@ -121,6 +123,7 @@ class AdminPage extends PolymerElement {
         super.connectedCallback();
         this._makeAjax('http://10.117.189.55:9090/admanagement/plans', 'get', null)
 
+
     }
 
     _checkDate() {
@@ -157,11 +160,13 @@ class AdminPage extends PolymerElement {
         ajax.url = url;
         ajax.body = postObj ? JSON.stringify(postObj) : undefined;
         ajax.generateRequest();
+
     }
 
-    _handleError(){
+    _handleError() {
         this.$.same.open();
     }
+
 
 
     _handleAdd() {
@@ -198,5 +203,11 @@ class AdminPage extends PolymerElement {
         }
 
     }
+
+
+
+
+
 }
+
 window.customElements.define('admin-page', AdminPage);

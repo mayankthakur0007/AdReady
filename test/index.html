@@ -20,9 +20,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     window.MyAppGlobals = { rootPath: '/' };
   </script>
 
+
   <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
   <script src="../node_modules/mocha/mocha.js"></script>
   <script src="../node_modules/chai/chai.js"></script>
+
+  <script src="../node_modules/sinon/pkg/sinon.js"></script>
   <script src="../node_modules/wct-mocha/wct-mocha.js"></script>
 
 </head>
@@ -31,12 +34,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
     WCT.loadSuites([
       // Load 'my-view1.html' test suite, using native shadow dom
-      // './user-app-app/user-list_test.html?dom=shadow',
-      // './CurrencyExchange-app/user-list_test.html?dom=shadow',
-      // './AdReady-app/AdReady-app_test.html?dom=shadow',
-      './AdReady-app/login-page_test.html?dom=shadow',
-      // Load 'my-view1.html' test suite, using shadydom
-      // 'my-view1.html?wc-shadydom=true',
+
+      './AdReady-app/AdReady-app_test.html?dom=shadow',
+      './AdReady-app/login-page_test.html?dom=shadow',  
+      './AdReady-app/salePerson-page_test.html?dom=shadow'    
     ]);
   </script>
 </body>

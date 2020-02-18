@@ -11,6 +11,7 @@ import '@fooloomanzoo/datetime-picker/datetime-picker.js';
 import '@fooloomanzoo/datetime-picker/time-picker.js';
 import '@polymer/paper-listbox/paper-listbox.js';
 import '@polymer/paper-dialog/paper-dialog.js';
+
 /**
 * @customElement
 * @polymer
@@ -118,6 +119,7 @@ h3{
 <paper-toast text="Purchased" id="purchase"></paper-toast>
 
 `;
+
     }
     static get properties() {
         return {
@@ -184,6 +186,7 @@ h3{
         this._makeAjax(`http://10.117.189.55:9090/admanagement/slots/book`, 'post', obj)
         this.action = 'purchase'
         }
+
     }
 
     // as soon as page load make ajax call method will run
@@ -207,6 +210,7 @@ h3{
     }
 
     // calling main ajax call method
+
     _makeAjax(url, method, postObj) {
         let ajax = this.$.ajax;
         ajax.method = method;

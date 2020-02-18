@@ -98,7 +98,9 @@ cursor: pointer;
       <home-page name="home"></home-page>
       <login-page name="login"></login-page>
       <admin-page name="admin-page"></admin-page>
+
       <my-bookings name="my-bookings"></my-bookings>
+
       <salesperson-page name="salesperson-page"></salesperson-page>
     </iron-pages>
     </app-header-layout>
@@ -114,10 +116,12 @@ cursor: pointer;
         observer: '_pageChanged'
       },
       userName: {
+
         type: String,
         value: sessionStorage.getItem("name"),
         reflectToAttribute: true,
         observer: '_nameChanged'
+
       },
       schemeId: {
         type: Number,
@@ -126,7 +130,9 @@ cursor: pointer;
       },
       login: {
         type: Boolean,
+
         value: sessionStorage.getItem("login"),
+
         reflectToAttribute: true,
         observer: '_loginChanged'
       },
@@ -141,9 +147,11 @@ cursor: pointer;
       '_routePageChanged(routeData.page)'
     ];
   }
+
   _nameChanged() {
     this.userName = this.userName
   }
+
   _loginChanged() {
     this.addEventListener('refresh-login', (event) => {
       this.login = event.detail.login;
@@ -167,6 +175,7 @@ cursor: pointer;
     if (!page) {
       this.page = 'login';
     } else if (['login', 'admin-page', 'salesperson-page', 'my-bookings'].indexOf(page) !== -1) {
+
       this.page = page;
     } else {
       this.page = 'login';

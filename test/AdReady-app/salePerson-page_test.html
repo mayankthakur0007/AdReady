@@ -1,41 +1,33 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+<html>
 
-    <title>AdReady-app test</title>
+<head>
+  <script src="../../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+  <script src="../../node_modules/@polymer/test-fixture/test-fixture.js"></script>
+  <script src="../../node_modules/mocha/mocha.js"></script>
+  <script src="../../node_modules/chai/chai.js"></script>
+  <script src="../../node_modules/sinon/pkg/sinon.js"></script>
+  <script src="../../node_modules/wct-mocha/wct-mocha.js"></script>
 
-    <script src="../../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
-    <script src="../../node_modules/@polymer/test-fixture/test-fixture.js"></script>
-    <script src="../../node_modules/mocha/mocha.js"></script>
-    <script src="../../node_modules/chai/chai.js"></script>
-    <script src="../../node_modules/wct-mocha/wct-mocha.js"></script>
+  <script type="module" src="../../src/AdReady-app/salesPerson-page.js"></script>
 
-    <script type="module" src="../../src/AdReady-app/AdReady-app.js"></script>
-    <script>
-      window.MyAppGlobals = { rootPath: '/' };
-    </script>
-  </head>
-  <body>
+</head>
 
-    <test-fixture id="BasicTestFixture">
-      <template>
-        <AdReady-app></AdReady-app>
-      </template>
-    </test-fixture>
+<body>
+  <test-fixture id="SalesPersonFixture">
+    <template>
+      <salesperson-page></salesperson-page>
+    </template>
+  </test-fixture>
+  <script>
 
-
-
-
-    <script>
- describe('Login Page', function () {
-      var element = fixture('BasicTestFixture');
+describe('Login Page', function () {
+      var element = fixture('SalesPersonFixture');
       debugger;
       var elementShadowRoot = element.shadowRoot;
       describe('When the component is rendered', function () {
         beforeEach(function () {
-          element = fixture('BasicTestFixture');
+          element = fixture('loginFixture');
           elementShadowRoot = element.shadowRoot;
         });
         it('should render the component', function () {
@@ -85,9 +77,7 @@
       })
     });
   
+  </script>
+</body>
 
-    </script>
-
-
-  </body>
 </html>

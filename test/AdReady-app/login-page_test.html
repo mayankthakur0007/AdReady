@@ -9,8 +9,10 @@
   <script src="../../node_modules/sinon/pkg/sinon.js"></script>
   <script src="../../node_modules/wct-mocha/wct-mocha.js"></script>
 
+
   <!-- <script type="module" src="../../src/AdReady-app/login-page.js"></script> -->
   <script type="module" src="../../src/AdReady-app/login-page.js"></script>
+
 </head>
 
 <body>
@@ -20,6 +22,7 @@
     </template>
   </test-fixture>
   <script>
+
     describe('Login Page', function () {
       var element;
       var elementShadowRoot
@@ -30,6 +33,7 @@
           console.log(element)
           elementShadowRoot = element.shadowRoot;
           console.log(elementShadowRoot)
+
         });
         it('should render the component', function () {
           expect(element).to.be.exist;
@@ -61,18 +65,23 @@
               loginBtn.click();
               expect(loginBtn.callCount).to.be.equal(1)
               done();
-            });
+            })
           });
-          it.skip('should validate the form', (done) => {
+          it('should validate the form', (done) => {
             flush(function () {
               element.$.mobileNumber.value = '1234567890';
-              element.$.password.value = 'start@123'
+              element.$.password.value='start@123'
               loginBtn.click();
-            });
+            })
           })
+
+
+
+
         })
       })
     });
+  
   </script>
 </body>
 
