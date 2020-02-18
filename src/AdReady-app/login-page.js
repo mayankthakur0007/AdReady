@@ -60,6 +60,7 @@ class LoginPage extends PolymerElement {
 </style>
 <app-location route="{{route}}">
 </app-location>
+
 <div id="container">
     <iron-form id="form">
         <form>
@@ -119,6 +120,7 @@ class LoginPage extends PolymerElement {
             this.$.wrongCredentials.open();
         } else {
             this.dispatchEvent(new CustomEvent('refresh-login', {
+                
                 detail: { login: true, name: this.users.userName }, bubbles:
                     true, composed: true
             }))
@@ -130,6 +132,7 @@ class LoginPage extends PolymerElement {
                 this.set('route.path', './salesperson-page')
             }else{
                 this.set('route.path', './admin-page')
+
             }
         }
     }
