@@ -1,10 +1,13 @@
-import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
+import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import '@polymer/iron-form/iron-form.js';
 import '@polymer/paper-input/paper-input.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/iron-ajax/iron-ajax.js';
 import '@polymer/paper-toast/paper-toast.js';
 import '@polymer/app-route/app-location.js';
+import '@polymer/paper-dialog/paper-dialog.js';
+
+
 
 /**
 * @customElement
@@ -60,6 +63,19 @@ class LoginPage extends PolymerElement {
 </style>
 <app-location route="{{route}}">
 </app-location>
+ from date <input id="datepicker" on-blur="_checkDate" required class="datepicker-input" type="date" data-date-format="yyyy-mm-dd" >
+ to date <input id="datepicker1" on-blur="_checkDate1" required class="datepicker-input" type="date" data-date-format="yyyy-mm-dd" >
+
+<paper-button raised on-click="_modelOpen">modal dialog</paper-button>
+<paper-dialog id="modal">
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit consequat.</p>
+     Date : <datetime-picker date={{fromDate}} time={{fromTime}}></datetime-picker>  
+    From Time: <time-input time="{{time}}" timezone="[[timezone]]" with-timezone="{{withTimezone}}"></time-input>
+    To Time: <time-input time="{{time}}" timezone="[[timezone]]" with-timezone="{{withTimezone}}"></time-input>
+  
+  <paper-button raised on-click="_modelClose">Tap me to close</paper-button>
+</paper-dialog>
+
 <div id="container">
     <iron-form id="form">
         <form>
@@ -123,11 +139,11 @@ class LoginPage extends PolymerElement {
                     true, composed: true
             }))
             sessionStorage.setItem('login', true);
-            sessionStorage.setItem('id', this.users.employeeId);
+            sessionStorage.setItem('id', this.users.userId);
             console.log(this.users.role)
             if (this.users.role == "SALESPERSON") {
                 this.set('route.path', './salesperson-page')
-            }else{
+            } else {
                 this.set('route.path', './admin-page')
             }
         }
@@ -141,6 +157,33 @@ class LoginPage extends PolymerElement {
         ajax.generateRequest();
     }
 
+    _modelOpen() {
+        this.$.modal.open();
+    }
+    _modelClose() {
+        this.$.modal.close();
+    }
+
+    _checkDate() {
+        var selectedText = this.$.datepicker.value;
+        var selectedDate = new Date(selectedText);
+        var now = new Date();
+        if (selectedDate <= now) {
+            alert("Date must be in the future");
+        }
+
+    }
+
+    _checkDate1(){
+        var selectedText = this.$.datepicker.value;
+        var selectedText1 = this.$.datepicker1.value;
+        if(selectedText1<selectedText){
+            alert('date must be greater than from date');
+        }
+
+
+    }
+
 }
 
-window.customElements.define('login-page', LoginPage);
+    window.customElements.define('login-page', LoginPage);
